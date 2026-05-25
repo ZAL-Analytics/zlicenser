@@ -1,7 +1,6 @@
 [package]
 name = "zlicenser"
 version = "0.1.0"
-edition = "2026"
 description = "Hardware-bound software licensing and leak tracing for commercial binaries: no ring-0 drivers required."
 license = "Apache-2.0"
 readme = "README.md"
