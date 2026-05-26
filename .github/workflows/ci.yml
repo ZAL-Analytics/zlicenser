@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: zal-analytics/zlicenser-protocol
+          path: ../zlicenser-protocol
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo test -p zlicenser
@@ -26,11 +30,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: zal-analytics/zlicenser-protocol
+          path: ../zlicenser-protocol
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - run: cargo clippy -p zlicenser --all-features -- -D warnings
+      - run: cargo clippy --workspace --exclude zlicenser-gui --all-features -- -D warnings
+      - run: cargo clippy -p zlicenser --no-default-features -- -D warnings
+
+  clippy-gui:
+    name: Clippy (GUI)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: zal-analytics/zlicenser-protocol
+          path: ../zlicenser-protocol
+      - name: Install Tauri system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy -p zlicenser-gui -- -D warnings
 
   fmt:
     name: Rustfmt
@@ -47,13 +75,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: EmbarkStudios/cargo-deny-action@v1
+      - uses: actions/checkout@v4
+        with:
+          repository: zal-analytics/zlicenser-protocol
+          path: ../zlicenser-protocol
+      - uses: EmbarkStudios/cargo-deny-action@v2
 
   audit:
     name: Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rustsec/audit-check@v1
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: zal-analytics/zlicenser-protocol
+          path: ../zlicenser-protocol
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo install cargo-audit --locked
+      - run: cargo audit
