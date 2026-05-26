@@ -1,0 +1,17 @@
+[package]
+name = "zlicenser-nodejs"
+version = "0.1.0"
+edition = "2021"
+authors = ["ZAL Analytics <arsalan@anwari.nl>"]
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+zlicenser = { path = "../../crates/zlicenser" }
+napi = { version = "2", features = ["napi9"] }
+napi-derive = "2"
+
+[build-dependencies]
+napi-build = "2"

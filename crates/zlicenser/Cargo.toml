@@ -1,0 +1,32 @@
+[package]
+name = "zlicenser"
+version = "0.1.0"
+edition = "2021"
+authors = ["ZAL Analytics <arsalan@anwari.nl>"]
+description = "Client library for the zlicenser hardware-bound software licensing framework."
+documentation = "https://docs.rs/zlicenser"
+repository = "https://github.com/zal-analytics/zlicenser"
+license = "Apache-2.0"
+keywords = ["licensing", "hardware-fingerprint", "client", "drm", "zlicenser"]
+categories = ["cryptography", "authentication"]
+readme = "../../README.md"
+publish = true
+
+[dependencies]
+zlicenser-protocol = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+figment = { version = "0.10", features = ["toml"] }
+reqwest = { version = "0.12", features = ["rustls-tls", "json"], default-features = false }
+clap = { version = "4", features = ["derive"] }
+
+[dev-dependencies]
+insta = "1"
+proptest = "1"
+mockall = "0.13"
+assert_cmd = "2"

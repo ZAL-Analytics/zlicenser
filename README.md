@@ -1,65 +1,65 @@
 # zlicenser
 
-**Per-customer encrypted builds and leak attribution for commercial binaries. No kernel drivers.**
+Client library and user-facing apps for the zlicenser licensing framework.
 
-> Under active development. Crate name reserved on crates.io. APIs and on-disk formats are unstable.
+## Overview
 
----
+`zlicenser` is the client side of the zlicenser ecosystem. It includes the library crate for protected applications, a ratatui TUI, and a Tauri 2 GUI for interacting with vendor licensing servers.
 
-## What is zlicenser?
+## Workspace layout
 
-`zlicenser` is an open-source Rust licensing framework for commercial software. It produces per-customer encrypted builds bound to a hardware fingerprint, so every copy a vendor ships is cryptographically attributable to the customer who received it. Runs on Linux, Windows, and macOS in user space, with a CLI and Tauri GUI for vendor workflows.
+```
+crates/zlicenser/        # library crate (crates.io)
+apps/zlicenser-tui/      # ratatui terminal app (publish = false)
+apps/zlicenser-gui/      # Tauri 2 + SvelteKit desktop app (publish = false)
+bindings/python/         # PyO3 + maturin Python bindings (publish = false)
+bindings/nodejs/         # napi-rs Node.js bindings (publish = false)
+bindings/go/             # CGo + cbindgen Go bindings (publish = false)
+xtask/                   # build automation (publish = false)
+docs/                    # mdBook documentation
+```
 
-It also includes a small launcher and decryption shim that handles on-the-fly payload decryption at application start, so vendors can ship multiple zlicenser-protected apps without each one re-implementing the loader.
+## System dependencies
 
-## Threat model
+| Component | Ubuntu | Fedora |
+|---|---|---|
+| zlicenser (library) | | |
+| zlicenser-tui | | |
+| zlicenser-gui (Tauri) | `libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev pkg-config` | `webkit2gtk4.1-devel gtk3-devel libayatana-appindicator-gtk3-devel librsvg2-devel pkgconf` |
+| Python bindings | `python3-dev python3-pip` + `pip install maturin` | `python3-devel python3-pip` + `pip install maturin` |
+| Node.js bindings | nodejs (>=18) | nodejs (>=18) |
+| SvelteKit frontend | nodejs (>=18) | nodejs (>=18) |
 
-zlicenser is **attribution-first**. It exists to give vendors cryptographic proof of which customer a leaked binary came from, and to deter casual reuse, not to win an arms race against professional crackers.
+Ubuntu:
 
-**Defends against:**
-- Casual binary sharing between users and across machines
-- Untracked piracy: every leaked copy traces back to its licensee
-- License-key reuse (there is no shared key, the binary itself is the license)
-- Casual hardware-identifier spoofing
+```sh
+sudo apt install -y \
+  libwebkit2gtk-4.1-dev libgtk-3-dev \
+  libayatana-appindicator3-dev librsvg2-dev pkg-config \
+  python3-dev python3-pip
+pip3 install maturin
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
 
-**Does not defend against:**
-- A skilled reverse engineer who dumps the decrypted payload from memory. User-space DRM cannot prevent this; it can only raise the cost.
-- An attacker who fully replicates the target machine's fingerprint inputs.
-- Tampering with application behavior after successful decryption.
+Fedora:
 
-If you need to stop commercial cracking groups, use a ring-0 solution. If you want strong attribution, machine-scoped execution, and a clean user-space integration, zlicenser is built for that.
+```sh
+sudo dnf install -y \
+  webkit2gtk4.1-devel gtk3-devel \
+  libayatana-appindicator-gtk3-devel librsvg2-devel pkgconf \
+  python3-devel python3-pip
+pip3 install maturin
+sudo dnf install -y nodejs
+```
 
-## How it works
+Rust toolchain: install via `rustup`, `rust-toolchain.toml` pins to stable.
 
-1. **Fingerprinting**: the customer's hardware and OS state is sampled across tiered identifier sources (CPU, GPU, firmware, OS install, storage) and hashed into a hardware key. Stability tiers and a tolerance threshold allow routine hardware or driver changes without breaking the license.
-2. **Per-issuance encryption**: the vendor encrypts the application with a key derived from the customer's hardware key and a per-issuance secret. Each issued binary is cryptographically unique, even across customers with identical hardware.
-3. **Decryption shim**: a lightweight loader bundled with the application reconstructs the decryption key from the live fingerprint at launch and decrypts the payload into memory before transferring execution.
-4. **Vendor tooling**: a CLI for scripting license issuance into checkout or provisioning flows, plus a Tauri desktop app for non-technical vendors to issue, inspect, re-enroll, and revoke licenses.
+## Related repositories
 
-## Design goals
-
-- Establish legal and technical traceability between every delivered binary and a named customer.
-- Deter casual sharing and reuse across machines.
-- Stay entirely in user space: no kernel modules, no elevated privileges, no driver signing dance.
-- Survive normal hardware drift (driver updates, peripheral changes) without locking out legitimate users.
-- Give vendors a clean integration surface: ship a payload, get an encrypted binary back.
-
----
-
-## Status
-
-| Component                   | Status  |
-|-----------------------------|---------|
-| Hardware fingerprinting     | Planned |
-| Cryptographic core          | Planned |
-| Decryption shim             | Planned |
-| Vendor CLI                  | Planned |
-| License manager GUI         | Planned |
-| Reference licensing server  | Planned |
-| Remote revocation           | Planned |
-
----
+- [zlicenser-protocol](https://github.com/zal-analytics/zlicenser-protocol): shared protocol, crypto, and wire formats
+- [zlicenser-server](https://github.com/zal-analytics/zlicenser-server): server library and vendor backend
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). 
+Apache-2.0, see [LICENSE](LICENSE).

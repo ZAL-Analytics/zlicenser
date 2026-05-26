@@ -1,0 +1,22 @@
+[package]
+name = "zlicenser-tui"
+version = "0.1.0"
+edition = "2021"
+authors = ["ZAL Analytics <arsalan@anwari.nl>"]
+publish = false
+
+[[bin]]
+name = "zlicenser-tui"
+path = "src/main.rs"
+
+[dependencies]
+zlicenser = { path = "../../crates/zlicenser" }
+anyhow = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+ratatui = "0.29"
+crossterm = "0.28"
+inquire = "0.7"
+clap = { version = "4", features = ["derive"] }

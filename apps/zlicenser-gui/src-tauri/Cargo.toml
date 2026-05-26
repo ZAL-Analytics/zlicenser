@@ -1,0 +1,32 @@
+[package]
+name = "zlicenser-gui"
+version = "0.1.0"
+edition = "2021"
+authors = ["ZAL Analytics <arsalan@anwari.nl>"]
+publish = false
+
+[[bin]]
+name = "zlicenser-gui"
+path = "src/main.rs"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+zlicenser = { path = "../../../crates/zlicenser" }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+tauri = { version = "2", features = [] }
+tauri-plugin-store = "2"
+tauri-plugin-fs = "2"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(mobile)'] }

@@ -1,9 +1,24 @@
-[package]
-name = "zlicenser"
-version = "0.1.1"
-description = "Hardware-bound software licensing and leak tracing for commercial binaries: no ring-0 drivers required."
-license = "Apache-2.0"
-readme = "README.md"
-repository = "https://github.com/arsalan-anwari/zlicenser"
-keywords = ["licensing", "drm", "hardware-fingerprint", "binary-encryption", "anti-piracy"]
-categories = ["cryptography", "development-tools"]
+[workspace]
+members = [
+    "crates/zlicenser",
+    "apps/zlicenser-tui",
+    "apps/zlicenser-gui/src-tauri",
+    "bindings/python",
+    "bindings/nodejs",
+    "bindings/go",
+    "xtask",
+]
+resolver = "2"
+
+[workspace.dependencies]
+zlicenser-protocol = "0.1"
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[patch.crates-io]
+zlicenser-protocol = { path = "../zlicenser-protocol" }
