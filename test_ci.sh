@@ -59,7 +59,7 @@ step "test --no-defaults"         "cd '$REPO' && cargo test -p zlicenser --no-de
 if check_tool cargo-deny;  then step "deny"  "cd '$REPO' && cargo deny check"  || FAILED+=(deny);  else SKIPPED+=(deny);  fi
 if check_tool cargo-audit; then step "audit" "cd '$REPO' && cargo audit"        || FAILED+=(audit); else SKIPPED+=(audit); fi
 
-echo -e "  ${YLW}NOTE${RST}  zlicenser-gui (Tauri) skipped locally — needs libwebkit2gtk-4.1-dev"
+echo -e "  ${YLW}NOTE${RST}  zlicenser-gui (Tauri) skipped locally, needs libwebkit2gtk-4.1-dev"
 
 hr
 [[ ${#SKIPPED[@]} -gt 0 ]] && echo -e "${YLW}Skipped:${RST} ${SKIPPED[*]}"
