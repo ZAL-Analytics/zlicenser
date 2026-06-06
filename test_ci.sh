@@ -57,7 +57,11 @@ step "test --all-features"        "cd '$REPO' && cargo test -p zlicenser --all-f
 step "test --no-defaults"         "cd '$REPO' && cargo test -p zlicenser --no-default-features"                        || FAILED+=(test-none)
 
 if check_tool cargo-deny;  then step "deny"  "cd '$REPO' && cargo deny check"  || FAILED+=(deny);  else SKIPPED+=(deny);  fi
-if check_tool cargo-audit; then step "audit" "cd '$REPO' && cargo audit --ignore RUSTSEC-2023-0071"  || FAILED+=(audit); else SKIPPED+=(audit); fi
+if check_tool cargo-audit; then
+  step "audit" "cd '$REPO' && { cargo audit --ignore RUSTSEC-2023-0071 > /tmp/audit.log 2>&1 || { cat /tmp/audit.log; false; }; }" || FAILED+=(audit)
+else
+  SKIPPED+=(audit)
+fi
 
 echo -e "  ${YLW}NOTE${RST}  zlicenser-gui (Tauri) skipped locally, needs libwebkit2gtk-4.1-dev"
 

@@ -93,4 +93,10 @@ jobs:
       - uses: baptiste0928/cargo-install@v3
         with:
           crate: cargo-audit
-      - run: cargo audit --ignore RUSTSEC-2023-0071
+      - run: |
+          if cargo audit --ignore RUSTSEC-2023-0071 > /tmp/audit.log 2>&1; then
+            echo "No vulnerabilities found."
+          else
+            cat /tmp/audit.log
+            exit 1
+          fi
