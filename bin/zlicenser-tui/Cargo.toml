@@ -10,7 +10,7 @@ name = "zlicenser-tui"
 path = "src/main.rs"
 
 [dependencies]
-zlicenser = { path = "../../crates/zlicenser" }
+zlicenser = { path = "../../" }
 anyhow = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }

@@ -13,7 +13,7 @@ path = "src/main.rs"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-zlicenser = { path = "../../../crates/zlicenser" }
+zlicenser = { path = "../../../" }
 anyhow = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

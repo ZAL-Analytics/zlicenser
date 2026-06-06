@@ -9,7 +9,7 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-zlicenser = { path = "../../crates/zlicenser" }
+zlicenser = { path = "../../" }
 napi = { version = "2", features = ["napi9"] }
 napi-derive = "2"
 

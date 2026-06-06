@@ -7,9 +7,9 @@ This is the customer side of the ecosystem. Customers use the GUI or TUI to brow
 ## What's in this repo
 
 ```
-crates/zlicenser/        # library crate (published to crates.io)
-apps/zlicenser-tui/      # ratatui terminal app
-apps/zlicenser-gui/      # Tauri 2 + SvelteKit desktop app
+src/                     # library crate source (published to crates.io)
+bin/zlicenser-tui/       # ratatui terminal app
+bin/zlicenser-gui/       # Tauri 2 + SvelteKit desktop app
 bindings/python/         # PyO3 + maturin
 bindings/nodejs/         # napi-rs
 bindings/go/             # CGo + cbindgen
@@ -17,7 +17,7 @@ xtask/                   # build automation
 docs/                    # mdBook documentation
 ```
 
-The library crate is the only thing published to crates.io. The apps, bindings, and xtask are all `publish = false`.
+The workspace root `Cargo.toml` is both the workspace manifest and the published library crate. Everything under `bin/` and `bindings/` is `publish = false`.
 
 ## Building
 

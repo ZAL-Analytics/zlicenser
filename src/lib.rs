@@ -1,2 +1,9 @@
-// zlicenser: hardware-bound licensing framework for commercial Rust binaries.
-// Implementation coming soon. This crate name is reserved.
+pub mod client;
+pub mod desktop;
+pub mod error;
+pub mod marketplace;
+pub mod shim;
+
+pub fn hello_world() -> &'static str {
+    "hello from zlicenser"
+}

@@ -10,5 +10,5 @@ name = "zlicenser_python"
 crate-type = ["cdylib"]
 
 [dependencies]
-zlicenser = { path = "../../crates/zlicenser" }
+zlicenser = { path = "../../" }
 pyo3 = { version = "0.25", features = ["extension-module"] }
