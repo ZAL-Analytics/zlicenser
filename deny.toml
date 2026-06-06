@@ -45,6 +45,9 @@ ignore = [
     "RUSTSEC-2025-0081", # unic-char-property
     "RUSTSEC-2025-0098", # unic-ucd-version
     "RUSTSEC-2025-0100", # unic-ucd-ident
+    # rsa Marvin Attack timing side-channel; no upstream fix available.
+    # Used only for signature verification (public-key op); private-key path not exercised.
+    "RUSTSEC-2023-0071",
 ]
 
 [sources]
