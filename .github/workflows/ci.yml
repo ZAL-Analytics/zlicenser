@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rustsec/audit-check@v2
+      - uses: baptiste0928/cargo-install@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ignore: RUSTSEC-2023-0071
+          crate: cargo-audit
+      - run: cargo audit --ignore RUSTSEC-2023-0071
