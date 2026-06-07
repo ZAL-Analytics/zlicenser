@@ -15,44 +15,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: zlicenser
       - uses: actions/checkout@v4
         with:
           repository: zal-analytics/zlicenser-protocol
           path: zlicenser-protocol
-      - run: sed -i 's|path = "../zlicenser-protocol"|path = "zlicenser-protocol"|' Cargo.toml
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "zlicenser -> target"
       - run: cargo test -p zlicenser
+        working-directory: zlicenser
       - run: cargo test -p zlicenser --all-features
+        working-directory: zlicenser
       - run: cargo test -p zlicenser --no-default-features
+        working-directory: zlicenser
 
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: zlicenser
       - uses: actions/checkout@v4
         with:
           repository: zal-analytics/zlicenser-protocol
           path: zlicenser-protocol
-      - run: sed -i 's|path = "../zlicenser-protocol"|path = "zlicenser-protocol"|' Cargo.toml
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "zlicenser -> target"
       - run: cargo clippy --workspace --exclude zlicenser-gui --all-features -- -D warnings
+        working-directory: zlicenser
       - run: cargo clippy -p zlicenser --no-default-features -- -D warnings
+        working-directory: zlicenser
 
   clippy-gui:
     name: Clippy (GUI)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: zlicenser
       - uses: actions/checkout@v4
         with:
           repository: zal-analytics/zlicenser-protocol
           path: zlicenser-protocol
-      - run: sed -i 's|path = "../zlicenser-protocol"|path = "zlicenser-protocol"|' Cargo.toml
       - name: Install Tauri system dependencies
         run: |
           sudo apt-get update
@@ -61,7 +73,10 @@ jobs:
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "zlicenser -> target"
       - run: cargo clippy -p zlicenser-gui -- -D warnings
+        working-directory: zlicenser
 
   fmt:
     name: Rustfmt
@@ -78,12 +93,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: zlicenser
       - uses: actions/checkout@v4
         with:
           repository: zal-analytics/zlicenser-protocol
           path: zlicenser-protocol
-      - run: sed -i 's|path = "../zlicenser-protocol"|path = "zlicenser-protocol"|' Cargo.toml
       - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: zlicenser/Cargo.toml
 
   audit:
     name: Audit
