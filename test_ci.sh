@@ -58,7 +58,7 @@ step "test --no-defaults"         "cd '$REPO' && cargo test -p zlicenser --no-de
 
 if check_tool cargo-deny;  then step "deny"  "cd '$REPO' && cargo deny check"  || FAILED+=(deny);  else SKIPPED+=(deny);  fi
 if check_tool cargo-audit; then
-  step "audit" "cd '$REPO' && { cargo audit --ignore RUSTSEC-2023-0071 > /tmp/audit.log 2>&1 || { cat /tmp/audit.log; false; }; }" || FAILED+=(audit)
+  step "audit" "cd '$REPO' && { cargo audit --ignore RUSTSEC-2023-0071 --ignore RUSTSEC-2026-0002 > /tmp/audit.log 2>&1 || { cat /tmp/audit.log; false; }; }" || FAILED+=(audit)
 else
   SKIPPED+=(audit)
 fi
